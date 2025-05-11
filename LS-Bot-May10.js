@@ -58,7 +58,6 @@ function whatIsDifferent(arr) {
 // Problem 1: Group Anagrams
 // Difficulty: Advanced
 // Create a function that takes an array of strings as an argument and returns a nested array where each inner array contains strings that are anagrams of each other.
-// 2:35
 // The order of the anagram groups should follow the order of the first appearance of a word in each group.
 // function groupAnagrams(words) {
 //   // Your implementation here
