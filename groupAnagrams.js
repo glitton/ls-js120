@@ -13,10 +13,6 @@ E: ['eat', 'tea', 'tan', 'ate', 'nat', 'bat'] => [[eat, tea, ate], [tan, nat], [
 D: arrays, use an object where the key is the sorted word and the value is the array that contains the anagrams
 
 A:
-Create a helper function, isAnagram with parameters word1, word2
-  - sort word1
-  - return sorted word1 is equal to sorted word2 
-  - if true then the words are anagrams, false otherwise
 
 1. Initialize an empty object to store anagram groups where keys are sorted words
 2. Initialize an array to track the order of first appearances
@@ -34,8 +30,8 @@ Create a helper function, isAnagram with parameters word1, word2
 */
 
 function groupAnagrams(words) {
-  if(words.length === 0) return []
-  
+  if (words.length === 0) return [];
+
   let anagrams = {};
   let wordOrder = [];
 
@@ -43,7 +39,7 @@ function groupAnagrams(words) {
     let sortedWord = word.split("").sort().join("");
 
     if (!anagrams[sortedWord]) {
-      anagrams[sortedWord] = anagrams[sortedWord] || [];
+      anagrams[sortedWord] = [];
       wordOrder.push(sortedWord);
     }
     anagrams[sortedWord].push(word);
@@ -57,9 +53,9 @@ function groupAnagrams(words) {
   return result;
 }
 
-function isAnagram(word1, word2) {
-  return word1.split("").sort().join("") === word2.split("").sort().join("");
-}
+// function isAnagram(word1, word2) {
+//   return word1.split("").sort().join("") === word2.split("").sort().join("");
+// }
 
 // // Test cases
 const p = console.log;
