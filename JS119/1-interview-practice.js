@@ -104,3 +104,5 @@ console.log(
 );
 console.log(JSON.stringify(transformArray([])) === JSON.stringify([]));
 console.log(JSON.stringify(transformArray([3])) === JSON.stringify([3]));
+
+// Finished both in 30 mins
