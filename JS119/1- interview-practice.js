@@ -23,6 +23,6 @@ console.log(transformArray([1, 2, 3, 4]) === [10, 9, 7, 4]);
 // 3: sum of numbers >= 3 (3+4) = 7
 // 4: sum of numbers >= 4 (4) = 4
 
-console.log(transformArray([5, 2, 7, 1]) === [14, 14, 7, 15]);
+console.log(transformArray([5, 2, 7, 1]) === [12, 14, 7, 15]);
 console.log(transformArray([]) === []);
 console.log(transformArray([3]) === [3]);

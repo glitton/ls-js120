@@ -32,28 +32,53 @@ sums = [3,2]
 
 */
 
-function alternatingSums(numbers) {
-  let evenSum = 0;
-  let oddSum = 0;
+// function alternatingSums(numbers) {
+// let evenSum = 0;
+// let oddSum = 0;
 
-  if (numbers.length === 0) return [0, 0];
+// if (numbers.length === 0) return [0, 0];
 
-  for (let idx = 0; idx < numbers.length; idx++) {
-    if (idx % 2 === 0) {
-      evenSum += numbers[idx];
-    } else {
-      oddSum += numbers[idx];
-    }
-  }
-  return [evenSum, oddSum];
+// for (let idx = 0; idx < numbers.length; idx++) {
+//   if (idx % 2 === 0) {
+//     evenSum += numbers[idx];
+//   } else {
+//     oddSum += numbers[idx];
+//   }
+// }
+// return [evenSum, oddSum];
+
+// }
+
+// function alternatingSums(arr) {
+//   let evenSum = 0;
+//   let oddSum = 0;
+
+//   arr.forEach((num, idx) => {
+//     if (idx % 2 === 0) {
+//       evenSum += num;
+//     } else {
+//       oddSum += num;
+//     }
+//   });
+
+//   return [evenSum, oddSum];
+// }
+
+// Using filter and reduce
+
+function alternatingSums(arr) {
+  return [
+    arr.filter((_, idx) => idx % 2 === 0).reduce((sum, num) => sum + num, 0),
+    arr.filter((_, idx) => idx % 2 === 1).reduce((sum, num) => sum + num, 0),
+  ];
 }
 
 const p = console.log;
 const eq = (arr1, arr2) => JSON.stringify(arr1) === JSON.stringify(arr2);
 
 p(eq(alternatingSums([1, 2, 3, 4, 5]), [9, 6])); // (1+3+5, 2+4)
-p(eq(alternatingSums([1, 1, 1, 1, 1]), [3, 2]));
-p(eq(alternatingSums([10, 20]), [10, 20]));
-p(eq(alternatingSums([5]), [5, 0]));
-p(eq(alternatingSums([]), [0, 0]));
-p(eq(alternatingSums([-5, 10, 15, -20]), [10, -10]));
+// p(eq(alternatingSums([1, 1, 1, 1, 1]), [3, 2]));
+// p(eq(alternatingSums([10, 20]), [10, 20]));
+// p(eq(alternatingSums([5]), [5, 0]));
+// p(eq(alternatingSums([]), [0, 0]));
+// p(eq(alternatingSums([-5, 10, 15, -20]), [10, -10]));

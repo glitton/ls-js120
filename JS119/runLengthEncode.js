@@ -7,35 +7,40 @@ rules:
 
 E: aabbaabb => a2b2a2b2
 
+
+
+
 D: string
 
 A: 
-Initialize encodedString var, assign to empty string
-Initialize count var, assign to 1
+Initialize encodedString to empty string
+Initialize count to 1
 Iterate over the input string
-  if the nextLetter is not undefined and is the same as the currLetter
-    - yes: increment count by 1
-    - no: add the current letter and count to the newString
-  reset count to 1  
-return encodedString 
+  - if at the end of the string or if the currLetter is not equal to the nextLetter
+    - encodedString is equal to currLetter + count
+  else: increment count by 1
 
+  aabbaabb
+  idx = 0  count = 1  currLetter = a  nextLetter = a  equal = yes count = 2
+  idx = 1  count = 2  currLetter = a  nextLetter = b  equal = no count = 2
+  encodedString = a2  count = 1
+  idx = 2   count = 1   currLetter = b  nextLetter = b  equal = yes   count = 2
+  idx = 3   count = 2   currLetter = b  nextLetter = a  equal = no   count = 2
+  encodedString = a2b2  count = 1
 */
 
 function runLengthEncode(str) {
+  if (str.length === 0) return "";
+
   let encodedString = "";
   let count = 1;
 
-  if (str.length === 0) return "";
-
   for (let idx = 0; idx < str.length; idx++) {
-    let currLetter = str[idx];
-    let nextLetter = str[idx + 1];
-
-    if (nextLetter !== undefined && nextLetter === currLetter) {
-      count++;
-    } else {
-      encodedString += `${currLetter}${count}`;
+    if (idx === str[str.length - 1] || str[idx] !== str[idx + 1]) {
+      encodedString += `${str[idx]}${count}`;
       count = 1;
+    } else {
+      count++;
     }
   }
   return encodedString;
