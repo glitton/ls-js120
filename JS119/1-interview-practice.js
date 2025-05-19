@@ -106,3 +106,141 @@ console.log(JSON.stringify(transformArray([])) === JSON.stringify([]));
 console.log(JSON.stringify(transformArray([3])) === JSON.stringify([3]));
 
 // Finished both in 30 mins
+
+/*P:Create a function that takes a string as an argument and returns a new string where each letter is replaced by its position in the alphabet. For uppercase letters, add 100 to the position value. Non-alphabetic characters should remain unchanged.
+input: string
+output: string that rep the position of the lower-case letter in the alphabet
+rules:
+- return a string number that is the position of the lowercase letter in the alphabet
+- if the letter is uppercase, add 100 to the string
+- Non-alpha chars should remain the same
+
+E: "A") === "101" => 'a' = 1 + 100 for capital
+"LaunchSchool" 
+L => 112  a => 1 => u => 20 => n => 15 => 
+
+D: input string, use array to store each letter
+
+A:
+Create an alphabet constant, assign to the alphabet string
+Create a finalAlphaString 
+If str.length is 0, return empty string
+Iterate over the input string
+  - check if each char in lower case is between a and z
+    - yes: check if the char is equal to lowercase
+      - yes: append the index of the char + 1 as a string
+      - no: append the index of the char + 1 + 100
+    - no: append char as is  
+
+*/
+
+// function alphabetPosition(str) {
+//   const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+//   let finalAlphaString = "";
+
+//   if (str.length === 0) return "";
+
+//   str.split("").forEach((char) => {
+//     if (ALPHABET.includes(char.toLowerCase())) {
+//       if (char === char.toLowerCase()) {
+//         finalAlphaString += ALPHABET.indexOf(char) + 1;
+//       } else {
+//         finalAlphaString += ALPHABET.indexOf(char.toLowerCase()) + 101;
+//       }
+//     } else {
+//       finalAlphaString += char;
+//     }
+//   });
+
+//   return finalAlphaString;
+// }
+
+//Alternate solution using map and arrays, better for strings
+
+function alphabetPosition(str) {
+  const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+  if (str.length === 0) return "";
+
+  return str
+    .split("")
+    .map((char) => {
+      if (ALPHABET.includes(char.toLowerCase())) {
+        let position = ALPHABET.indexOf(char.toLowerCase()) + 1;
+        return char === char.toLowerCase()
+          ? String(position)
+          : String(position + 100);
+      } else {
+        return char;
+      }
+    })
+    .join("");
+}
+// Examples
+// console.log(alphabetPosition("a") === "1");
+// console.log(alphabetPosition("z") === "26");
+// console.log(alphabetPosition("A") === "101");
+// console.log(alphabetPosition("Z") === "126");
+// console.log(alphabetPosition("ab2c!") === "1223!"); // Only letters are replaced
+// console.log(alphabetPosition("LaunchSchool") === "112121143811938151512");
+// console.log(alphabetPosition("") === "");
+// console.log(alphabetPosition("123!@#") === "123!@#"); // No letters to replace
+
+/*
+P: Create a function that takes an array of integers and returns the length of the longest "balanced" subarray. A balanced subarray is one where the sum of all elements is equal to 0. If no balanced subarray exists, return 0.
+input: array
+output: integer
+rules:
+- if the sum of the array is 0, it is considered balanced, return its length
+- If the sum isn't zero, return 0
+
+E: [1, 2, 3] => sum is 6, now way to balance the array, not balanced, return 0
+Get all subarrays
+For those that sum up to zero, get the one with the longest length
+
+A:
+Initialize a longest assign to 0
+Get all subarrays and filter those that sum up to zero (use a helper function)
+Iterate over the zeroSumSubarrays
+  - assign sum to current
+    - if current's length is longer than longest
+      - reassign longest to current
+Check current versus longest at the end of the loop
+Return longest      
+*/
+
+function zeroSumSubarrays(arr) {
+  let result = [];
+
+  for (let startIdx = 0; startIdx < arr.length; startIdx++) {
+    for (let endIdx = startIdx + 1; endIdx <= arr.length; endIdx++) {
+      let subArrays = arr.slice(startIdx, endIdx);
+      if (subArrays.reduce((sum, num) => sum + num, 0) === 0) {
+        result.push(subArrays);
+      }
+    }
+  }
+  return result;
+}
+
+function balancedSubarray(arr) {
+  let longest = 0;
+  let zeroSumNumbers = zeroSumSubarrays(arr);
+
+  zeroSumNumbers.forEach((arr) => {
+    let current = arr.length;
+    if (current > longest) {
+      longest = current;
+    }
+  });
+  return longest;
+}
+
+// console.log(zeroSumSubarrays([5, 2, -2, 3, 1, 0, -3]));
+// Examples
+console.log(balancedSubarray([1, -1]) === 2); // [1, -1] sums to 0
+console.log(balancedSubarray([1, 2, -2, -1]) === 4); // The entire array sums to 0
+console.log(balancedSubarray([1, 2, 3, -3, -2]) === 4); // [2, 3, -3, -2] sums to 0
+console.log(balancedSubarray([5, 2, -2, 3, 1, 0, -3]) === 2); // [2, -2] sums to 0
+console.log(balancedSubarray([0]) === 1); // [0] sums to 0
+console.log(balancedSubarray([1, 2, 3]) === 0); // No subarray sums to 0
+console.log(balancedSubarray([]) === 0); // Empty array
