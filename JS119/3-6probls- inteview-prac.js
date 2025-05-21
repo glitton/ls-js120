@@ -185,6 +185,66 @@ function largestProductOfFive(strNumbers) {
   return maxProduct;
 }
 // Example:
-console.log(largestProductOfFive("12345") === 120); // 1 * 2 * 3 * 4 * 5
-console.log(largestProductOfFive("12345678") === 6720); // 4 * 5 * 6 * 7 * 8
-console.log(largestProductOfFive("1234567890") === 15120); // 5 * 6 * 7 * 8 * 9
+// console.log(largestProductOfFive("12345") === 120); // 1 * 2 * 3 * 4 * 5
+// console.log(largestProductOfFive("12345678") === 6720); // 4 * 5 * 6 * 7 * 8
+// console.log(largestProductOfFive("1234567890") === 15120); // 5 * 6 * 7 * 8 * 9
+
+/*
+P: Write a function that takes an array of numbers and a target sum. The function should return all pairs of indices where the elements at those indices add up to the target sum.
+input: array and int
+output: array of subarrays
+rules:
+- the returned array of subarrays contain the pair of indices where the nums of the indices add up to the target sum
+- if not elements add up to the target sum return an empty array
+
+E: [1, 2, 3, 4, 5], 6) => [[1, 5], [2, 4]] => indices => [[0, 4], [1, 3]]
+
+D: arrays
+
+A:
+Initialize an indicesPairs empty array
+
+Iterate over the input array using a nested loop
+  - get the firstNumber using the outer loop index and the secondNumber using the inner loop index
+  - if the sum of firstNumber and secondNumber is equal to the target sum
+    - append the indexes as an array to the indicesPairs array
+Return the indicesPairs    
+*/
+
+function findPairs(arr, target) {
+  let indicesPairs = [];
+
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] + arr[j] === target) {
+        indicesPairs.push([i, j]);
+      }
+    }
+  }
+  return indicesPairs;
+}
+// // Example:
+// console.log(findPairs([1, 2, 3, 4, 5], 6)); // returns [[0, 4], [1, 3]]
+// console.log(findPairs([7, 2, 4, 6, 9, 1], 10)); // returns [[2, 3], [4, 5]]
+// console.log(findPairs([1, 2, 3], 10)); // returns []
+
+/*
+P: Implement a function that finds all permutations of a given string with non-repeating characters.
+input: string
+output: array of strings
+rules:
+- return an array that contains all the versions of the input string with non-repeating characters
+
+E: "abc" => 012, 021, 102, 120, 201, 210
+012, 021, 201, 210, 120, 102 
+Pattern: shift last element left until it becomes the first element
+
+D: strings and arrays
+
+A: Use recursion
+*/
+
+// Example:
+console.log(permutations("abc")); // returns ["abc", "acb", "bac", "bca", "cab", "cba"]
+console.log(permutations("ab")); // returns ["ab", "ba"]
+console.log(permutations("a")); // returns ["a"]
