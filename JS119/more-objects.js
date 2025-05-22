@@ -113,6 +113,38 @@ function countChars(str) {
     });
   return charCount;
 }
+// no regex
+function countChars(str) {
+  let charCount = {};
+
+  str
+    .toLowerCase()
+    .split("")
+    .forEach((char) => {
+      // Check if character is a letter (a-z) or a digit (0-9)
+      if ((char >= "a" && char <= "z") || (char >= "0" && char <= "9")) {
+        charCount[char] = (charCount[char] || 0) + 1;
+      }
+    });
+
+  return charCount;
+}
+
+function countChars(str) {
+  let charCount = {};
+  const validChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  str
+    .toLowerCase()
+    .split("")
+    .forEach((char) => {
+      if (validChars.includes(char)) {
+        charCount[char] = (charCount[char] || 0) + 1;
+      }
+    });
+
+  return charCount;
+}
 
 // const obj1 = countChars("Hello123");
 // p(obj1["h"] === 1); // true
