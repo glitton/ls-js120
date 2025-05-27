@@ -1,39 +1,116 @@
+const readline = require("readline-sync");
+
 function createPlayer() {
   return {
-    // possible state: player name?
-    // possible state: player's current move?
-
-    choose() {},
+    move: null,
   };
 }
 
-function createMove() {
-  return {
-    // possible state: type of move (paper, rock, scissors)
+function createComputer() {
+  let playerObject = createPlayer();
+
+  let computerObject = {
+    choose() {
+      const choices = ["rock", "paper", "scissors"];
+      let randomIndex = Math.floor(Math.random() * choices.length);
+      this.move = choices[randomIndex];
+    },
   };
+  return Object.assign(playerObject, computerObject);
 }
 
-function createRule() {
-  return {
-    // possible state? not clear whether Rules need state
+function createHuman() {
+  let playerObject = createPlayer();
+
+  let humanObject = {
+    choose() {
+      let choice;
+
+      while (true) {
+        console.log("Please choose rock, paper, or scissors:");
+        choice = readline.question();
+        if (["rock", "paper", "scissors"].includes(choice)) break;
+        console.log("Sorry, invalid choice.");
+      }
+
+      this.move = choice;
+    },
   };
+  return Object.assign(playerObject, humanObject);
 }
 
-// Since we don't yet know where to put `compare`, let's define
-// it as an ordinary function.
-let compare = function (move1, move2) {
-  // not yet implemented
-};
+// function createMove() {
+//   return {
+//     // possible state: type of move (paper, rock, scissors)
+//   };
+// }
+
+// function createRule() {
+//   return {
+//     // possible state? not clear whether Rules need state
+//   };
+// }
+
+// // Since we don't yet know where to put `compare`, let's define
+// // it as an ordinary function.
+// let compare = function (move1, move2) {
+//   // not yet implemented
+// };
 
 const RPSGame = {
-  human: createPlayer(),
-  computer: createPlayer(),
+  human: createHuman(),
+  computer: createComputer(),
+
+  displayWelcomeMessage() {
+    console.log("Welcome to Rock, Paper, Scissors!");
+  },
+
+  displayGoodbyeMessage() {
+    console.log("Thanks for playing Rock, Paper, Scissors!");
+  },
+
+  displayWinner() {
+    let humanMove = this.human.move;
+    let computerMove = this.computer.move;
+
+    console.log(`You choose: ${this.human.move}`);
+    console.log(`The computer chose: ${this.computer.move}`);
+
+    if (
+      (humanMove === "rock" && computerMove === "scissors") ||
+      (humanMove === "paper" && computerMove === "rock") ||
+      (humanMove === "scissors" && computerMove === "paper")
+    ) {
+      console.log("You win!");
+    } else if (
+      (humanMove === "rock" && computerMove === "paper") ||
+      (humanMove === "paper" && computerMove === "scissors") ||
+      (humanMove === "scissors" && computerMove === "rock")
+    ) {
+      console.log("Computer wins!");
+    } else {
+      console.log("It's a tie!");
+    }
+  },
+
+  playAgain() {
+    console.log("Would you like to play again? (y/n)");
+    let answer = readline.question();
+    return answer.toLowerCase()[0] === "y";
+  },
 
   play() {
-    displayWelcomeMessage();
-    this.human.choose();
-    this.computer.choose();
-    displayWinner();
-    displayGoodbyeMessage();
+    this.displayWelcomeMessage();
+
+    while (true) {
+      this.human.choose();
+      this.computer.choose();
+      this.displayWinner();
+      if (!this.playAgain()) break;
+    }
+
+    this.displayGoodbyeMessage();
   },
 };
+
+RPSGame.play();
