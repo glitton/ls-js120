@@ -3,20 +3,11 @@ const readline = require("readline-sync");
 function createPlayer() {
   return {
     move: null,
-  };
-}
 
-function createComputer() {
-  let playerObject = createPlayer();
-
-  let computerObject = {
-    choose() {
-      const choices = ["rock", "paper", "scissors"];
-      let randomIndex = Math.floor(Math.random() * choices.length);
-      this.move = choices[randomIndex];
+    setMove(value) {
+      this.move = createMove(value);
     },
   };
-  return Object.assign(playerObject, computerObject);
 }
 
 function createHuman() {
@@ -27,21 +18,47 @@ function createHuman() {
       let choice;
 
       while (true) {
-        console.log("Please choose rock, paper, or scissors:");
+        console.log(
+          "Please choose r for rock, p for paper, or sc for scissors:"
+        );
         choice = readline.question();
-        if (["rock", "paper", "scissors"].includes(choice)) break;
+        if (["r", "p", "sc"].includes(choice)) break;
         console.log("Sorry, invalid choice.");
       }
 
-      this.move = choice;
+      this.setMove(choice);
     },
   };
   return Object.assign(playerObject, humanObject);
 }
 
-function createMove() {
+function createComputer() {
+  let playerObject = createPlayer();
+
+  let computerObject = {
+    choose() {
+      const choices = ["rock", "paper", "scissors"];
+      let randomIndex = Math.floor(Math.random() * choices.length);
+      this.setMove(choices[randomIndex]);
+    },
+  };
+  return Object.assign(playerObject, computerObject);
+}
+
+function createMove(value) {
   return {
-    // possible state: type of move (paper, rock, scissors)
+    value,
+
+    beats(otherMove) {
+      if (this.value === "rock") {
+        return otherMove.value === "scissors";
+      } else if (this.value === "paper") {
+        return otherMove.value === "rock";
+      } else if (this.value === "scissors") {
+        return otherMove.value === "paper";
+      }
+      return false;
+    },
   };
 }
 
@@ -73,20 +90,12 @@ const RPSGame = {
     let humanMove = this.human.move;
     let computerMove = this.computer.move;
 
-    console.log(`You choose: ${this.human.move}`);
-    console.log(`The computer chose: ${this.computer.move}`);
+    console.log(`You choose: ${humanMove.value}`);
+    console.log(`The computer chose: ${computerMove.value}`);
 
-    if (
-      (humanMove === "rock" && computerMove === "scissors") ||
-      (humanMove === "paper" && computerMove === "rock") ||
-      (humanMove === "scissors" && computerMove === "paper")
-    ) {
+    if (humanMove.beats(computerMove)) {
       console.log("You win!");
-    } else if (
-      (humanMove === "rock" && computerMove === "paper") ||
-      (humanMove === "paper" && computerMove === "scissors") ||
-      (humanMove === "scissors" && computerMove === "rock")
-    ) {
+    } else if (computerMove.beats(humanMove)) {
       console.log("Computer wins!");
     } else {
       console.log("It's a tie!");
