@@ -39,11 +39,11 @@ function createHuman() {
   return Object.assign(playerObject, humanObject);
 }
 
-// function createMove() {
-//   return {
-//     // possible state: type of move (paper, rock, scissors)
-//   };
-// }
+function createMove() {
+  return {
+    // possible state: type of move (paper, rock, scissors)
+  };
+}
 
 // function createRule() {
 //   return {
