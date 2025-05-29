@@ -18,11 +18,9 @@ function createHuman() {
       let choice;
 
       while (true) {
-        console.log(
-          "Please choose r for rock, p for paper, or sc for scissors:"
-        );
+        console.log("Please choose rock, paper, or scissors:");
         choice = readline.question();
-        if (["r", "p", "sc"].includes(choice)) break;
+        if (["rock", "paper", "scissors"].includes(choice)) break;
         console.log("Sorry, invalid choice.");
       }
 
@@ -62,21 +60,13 @@ function createMove(value) {
   };
 }
 
-// function createRule() {
-//   return {
-//     // possible state? not clear whether Rules need state
-//   };
-// }
-
-// // Since we don't yet know where to put `compare`, let's define
-// // it as an ordinary function.
-// let compare = function (move1, move2) {
-//   // not yet implemented
-// };
-
 const RPSGame = {
   human: createHuman(),
   computer: createComputer(),
+  score: {
+    human: 0,
+    computer: 0,
+  },
 
   displayWelcomeMessage() {
     console.log("Welcome to Rock, Paper, Scissors!");
@@ -102,6 +92,27 @@ const RPSGame = {
     }
   },
 
+  updateScore() {
+    let humanMove = this.human.move;
+    let computerMove = this.computer.move;
+
+    if (humanMove.beats(computerMove)) {
+      this.score.human += 1;
+    } else if (computerMove.beats(humanMove)) {
+      this.score.computer += 1;
+    }
+  },
+
+  displayScore() {
+    console.log(
+      `Current game score - You: ${this.score.human}, Computer: ${this.score.computer}`
+    );
+  },
+
+  isMatchWinner() {
+    return this.score.human >= 5 || this.score.computer >= 5;
+  },
+
   playAgain() {
     console.log("Would you like to play again? (y/n)");
     let answer = readline.question();
@@ -110,14 +121,23 @@ const RPSGame = {
 
   play() {
     this.displayWelcomeMessage();
+    this.score = { human: 0, computer: 0 }; // Reset score at the start of a new game
 
     while (true) {
       this.human.choose();
       this.computer.choose();
       this.displayWinner();
-      if (!this.playAgain()) break;
-    }
+      this.updateScore();
+      this.displayScore();
 
+      if (this.isMatchWinner()) {
+        console.log(
+          `${this.score.human >= 5 ? "You are" : "Computer is"} the winner!`
+        );
+        this.score = { human: 0, computer: 0 }; // Reset score after match ends
+        if (!this.playAgain()) break;
+      } else if (!this.playAgain()) break;
+    }
     this.displayGoodbyeMessage();
   },
 };
