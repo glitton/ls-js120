@@ -69,7 +69,7 @@ function createComputer() {
 }
 
 function createMove(value) {
-  let moveMap = {
+  let MOVE_MAP = {
     r: "rock",
     p: "paper",
     sc: "scissors",
@@ -83,7 +83,7 @@ function createMove(value) {
   };
 
   return {
-    value: moveMap[value] || value,
+    value: MOVE_MAP[value] || value,
 
     beats(otherMove) {
       return WINNING_COMBOS[this.value]?.includes(otherMove.value) || false;
@@ -158,17 +158,21 @@ const RPSGame = {
     return answer.toLowerCase()[0] === "y";
   },
 
+  playRound() {
+    this.human.choose();
+    this.computer.choose();
+    this.displayWinner();
+    this.updateScore();
+    this.displayScore();
+  },
+
   play() {
     this.displayWelcomeMessage();
     this.displayGameRules(VALID_CHOICES);
     this.score = { human: 0, computer: 0 }; // Reset score at the start of a new game
 
     while (true) {
-      this.human.choose();
-      this.computer.choose();
-      this.displayWinner();
-      this.updateScore();
-      this.displayScore();
+      this.playRound();
 
       if (this.isMatchWinner()) {
         console.log(
