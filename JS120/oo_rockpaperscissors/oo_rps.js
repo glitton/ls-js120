@@ -29,9 +29,7 @@ function createHuman() {
       let choice;
 
       while (true) {
-        console.log(
-          "Please choose r for rock, p for paper, sc for scissors, l for lizard or sp for spock:"
-        );
+        console.log(`${MESSAGES["gameChoice"]}`);
         choice = readline.question();
         if (
           [
@@ -48,7 +46,7 @@ function createHuman() {
           ].includes(choice)
         )
           break;
-        console.log("Sorry, invalid choice.");
+        console.log(`${MESSAGES["invalidChoice"]}`);
       }
 
       this.setMove(choice);
@@ -106,14 +104,14 @@ const RPSGame = {
   },
 
   displayGameRules(options) {
-    console.log(`\n Here are the winning combinations`);
+    console.log(`\nHere are the winning combinations`);
     options.map((option) =>
       console.log(`\n----------> ${option} beats ${WINNING_COMBOS[option]} \n`)
     );
   },
 
   displayGoodbyeMessage() {
-    console.log("Thanks for playing Rock, Paper, Scissors!");
+    console.log(`${MESSAGES["gameEnd"]}`);
   },
 
   displayWinner() {
@@ -124,11 +122,11 @@ const RPSGame = {
     console.log(`The computer chose: ${computerMove.value}`);
 
     if (humanMove.beats(computerMove)) {
-      console.log("You win!");
+      console.log(`${MESSAGES["playerWins"]}`);
     } else if (computerMove.beats(humanMove)) {
-      console.log("Computer wins!");
+      console.log(`${MESSAGES["computerWins"]}`);
     } else {
-      console.log("It's a tie!");
+      console.log(`${MESSAGES["tie"]}`);
     }
   },
 
@@ -154,8 +152,9 @@ const RPSGame = {
   },
 
   playAgain() {
-    console.log("Would you like to play again? (y/n)");
+    console.log(`${MESSAGES["anotherGame"]}`);
     let answer = readline.question();
+    console.clear();
     return answer.toLowerCase()[0] === "y";
   },
 
