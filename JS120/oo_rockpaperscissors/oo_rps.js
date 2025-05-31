@@ -179,6 +179,7 @@ const RPSGame = {
         if (!this.playAgain()) break;
       } else if (!this.playAgain()) break;
     }
+    console.clear();
     this.displayGoodbyeMessage();
   },
 };
