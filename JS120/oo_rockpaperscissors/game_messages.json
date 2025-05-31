@@ -1,0 +1,18 @@
+{
+  "welcome": "Let's play Rock, Paper, Scissors, Lizard, Spock which is an expanded version\n   of the traditional game of Rock, Paper, Scissors.",
+  "winner": "First one to win 5 games is the champion!",
+  "invalidChoice": "That's not a valid choice. Please enter 'y' or 'n'.",
+  "invalidGameChoice": "That's not a valid choice. Please enter",
+  "enterChoice": "That's not a valid choice. Please enter 'y'.",
+  "playerWinsRound": "You win round ",
+  "playerWins": "You win the game, congratulations!",
+  "computerWins": "Computer wins the game!",
+  "computerWinsRound": "Computer wins round ",
+  "tie": "It's a tie!",
+  "tieRound": "It's a tie for round ",
+  "gameOver": "Game over, no one won three out of five!",
+  "nextRound": "Enter 'y' to play the next round.",
+  "anotherGame": "Do you want to play another best of five?  Answer 'y' for yes or 'n' for no.",
+  "exitEarly": "To end the game press 'y' to continue press 'c'.",
+  "gameEnd": "Thanks for playing, goodbye!"
+}

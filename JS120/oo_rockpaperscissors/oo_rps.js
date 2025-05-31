@@ -1,4 +1,15 @@
 const readline = require("readline-sync");
+const MESSAGES = require("./game_messages.json");
+
+const WINNING_COMBOS = {
+  rock: ["scissors", "lizard"],
+  paper: ["rock", "spock"],
+  scissors: ["paper", "lizard"],
+  lizard: ["paper", "spock"],
+  spock: ["rock", "scissors"],
+};
+
+const VALID_CHOICES = Object.keys(WINNING_COMBOS); //words of choices
 
 function createPlayer() {
   return {
@@ -18,9 +29,25 @@ function createHuman() {
       let choice;
 
       while (true) {
-        console.log("Please choose rock, paper, or scissors:");
+        console.log(
+          "Please choose r for rock, p for paper, sc for scissors, l for lizard or sp for spock:"
+        );
         choice = readline.question();
-        if (["rock", "paper", "scissors"].includes(choice)) break;
+        if (
+          [
+            "r",
+            "rock",
+            "p",
+            "paper",
+            "sc",
+            "scissors",
+            "l",
+            "lizard",
+            "sp",
+            "spock",
+          ].includes(choice)
+        )
+          break;
         console.log("Sorry, invalid choice.");
       }
 
@@ -35,7 +62,7 @@ function createComputer() {
 
   let computerObject = {
     choose() {
-      const choices = ["rock", "paper", "scissors"];
+      const choices = ["rock", "paper", "scissors", "lizard", "spock"];
       let randomIndex = Math.floor(Math.random() * choices.length);
       this.setMove(choices[randomIndex]);
     },
@@ -44,18 +71,24 @@ function createComputer() {
 }
 
 function createMove(value) {
+  let moveMap = {
+    r: "rock",
+    p: "paper",
+    sc: "scissors",
+    l: "lizard",
+    sp: "spock",
+    rock: "rock",
+    paper: "paper",
+    scissors: "scissors",
+    lizard: "lizard",
+    spock: "spock",
+  };
+
   return {
-    value,
+    value: moveMap[value] || value,
 
     beats(otherMove) {
-      if (this.value === "rock") {
-        return otherMove.value === "scissors";
-      } else if (this.value === "paper") {
-        return otherMove.value === "rock";
-      } else if (this.value === "scissors") {
-        return otherMove.value === "paper";
-      }
-      return false;
+      return WINNING_COMBOS[this.value]?.includes(otherMove.value) || false;
     },
   };
 }
@@ -69,7 +102,14 @@ const RPSGame = {
   },
 
   displayWelcomeMessage() {
-    console.log("Welcome to Rock, Paper, Scissors!");
+    console.log(`${MESSAGES["welcome"]}`);
+  },
+
+  displayGameRules(options) {
+    console.log(`\n Here are the winning combinations`);
+    options.map((option) =>
+      console.log(`\n----------> ${option} beats ${WINNING_COMBOS[option]} \n`)
+    );
   },
 
   displayGoodbyeMessage() {
@@ -121,6 +161,7 @@ const RPSGame = {
 
   play() {
     this.displayWelcomeMessage();
+    this.displayGameRules(VALID_CHOICES);
     this.score = { human: 0, computer: 0 }; // Reset score at the start of a new game
 
     while (true) {
