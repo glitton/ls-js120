@@ -7,6 +7,6 @@
   "computerWins": "Computer wins!",
   "computerWinsRound": "Computer wins round ",
   "tie": "It's a tie!",
-  "anotherGame": "Would you like to play again? (y/n)",
+  "anotherGame": "Would you like to play again (y/n) or see the game history (h)?",
   "gameEnd": "Thanks for playing, goodbye!"
 }

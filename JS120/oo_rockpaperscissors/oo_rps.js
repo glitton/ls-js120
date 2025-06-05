@@ -98,6 +98,7 @@ const RPSGame = {
     human: 0,
     computer: 0,
   },
+  history: [],
 
   displayWelcomeMessage() {
     console.log(`${MESSAGES["welcome"]}`);
@@ -133,18 +134,62 @@ const RPSGame = {
   updateScore() {
     let humanMove = this.human.move;
     let computerMove = this.computer.move;
+    let result = "tie";
 
     if (humanMove.beats(computerMove)) {
       this.score.human += 1;
+      result = "human";
     } else if (computerMove.beats(humanMove)) {
       this.score.computer += 1;
+      result = "computer";
     }
+
+    //Round info to track history
+    this.history.push({
+      round: this.history.length + 1,
+      humanMove: humanMove.value,
+      computerMove: computerMove.value,
+      result: result,
+      score: {
+        human: this.score.human,
+        computer: this.score.computer,
+      },
+    });
   },
 
   displayScore() {
     console.log(
       `Current game score - You: ${this.score.human}, Computer: ${this.score.computer}`
     );
+  },
+
+  displayHistory() {
+    console.log("n=====***** GAME HISTORY *****======");
+
+    if (this.history.length === 0) {
+      console.log("No moves have been made yet.");
+      return;
+    }
+
+    this.history.forEach((round) => {
+      console.log(`Round: ${round.round}`);
+      console.log(`  You chose: ${round.humanMove}`);
+      console.log(`  Computer chose: ${round.computerMove}`);
+
+      let resultText = "It was a tie.";
+
+      if (round.result === "human") {
+        resultText = "You won!";
+      } else if (round.result === "computer") {
+        resultText = "Computer won!";
+      }
+
+      console.log(`  Result: ${resultText}`);
+      console.log(
+        `  Score: You ${round.score.human}, Computer ${round.score.computer}`
+      );
+      console.log("");
+    });
   },
 
   isMatchWinner() {
@@ -154,6 +199,11 @@ const RPSGame = {
   playAgain() {
     console.log(`${MESSAGES["anotherGame"]}`);
     let answer = readline.question();
+
+    if (answer.toLowerCase() === "h") {
+      this.displayHistory();
+      return this.playAgain();
+    }
     console.clear();
     return answer.toLowerCase()[0] === "y";
   },
