@@ -72,7 +72,11 @@ function createInvoice(services = {}) {
       return this.phone + this.internet;
     },
 
-    addPayment(payments) {
+    addPayment(payment){
+      this.payments.push(payment)
+    },
+
+    addPayments(payments) {
       payments.forEach(this.addPayment, this);
     },
 
