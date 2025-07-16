@@ -150,4 +150,13 @@ function createProduct(id, name, stock, price) {
 let scissors = createProduct(0, "Scissors", 8, 10);
 let drill = createProduct(1, "Cordless Drill", 15, 45);
 
-console.log(scissors, drill);
+// console.log(scissors, drill);
+
+function Lizard() {
+  this.scamper = function () {
+    console.log("I'm scampering!");
+  };
+}
+
+let lizzy = new Lizard();
+lizzy.scamper(); // ?
