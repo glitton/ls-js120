@@ -81,4 +81,5 @@ let bar = {
   },
 };
 
-console.log(bar.add.call(foo));
+let answer = bar.add.call(foo);
+console.log(answer);
