@@ -13,10 +13,12 @@ Person.prototype.sayHello = function () {
 };
 
 function Doctor(name, specialty) {
-  // Your code to initialize properties
+  Person.call(this, name);
+  this.specialty = specialty;
 }
 
-// Your code to set up the prototype chain
+Doctor.prototype = Object.create(Person.prototype);
+Doctor.prototype.constructor = Doctor;
 
 Doctor.prototype.diagnose = function () {
   console.log("Performing diagnosis...");
