@@ -17,12 +17,12 @@ class Square {
     this.marker = marker;
   }
 
-  getMarker() {
-    return this.marker;
-  }
-
   isUnused() {
     return this.marker === Square.UNUSED_SQUARE;
+  }
+
+  getMarker() {
+    return this.marker;
   }
 }
 
