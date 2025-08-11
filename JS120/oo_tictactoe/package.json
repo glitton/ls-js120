@@ -1,5 +1,15 @@
 {
+  "name": "tic-tac-toe class version",
+  "version": "1.0.0",
+  "prettier": {
+    "printWidth": 100
+  },
   "dependencies": {
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.12.1",
+    "eslint-cli": "^1.1.1"
   }
 }
