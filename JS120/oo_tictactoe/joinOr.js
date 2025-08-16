@@ -26,7 +26,7 @@ D: array and strings
 A:
 Default separator is ', '
 Default conjunction is 'or'
-If array length is 1, 
+If array length is 1,
   - return the element as a string
 Else if array length is 2
   - return the two elements separated by the conjunction
