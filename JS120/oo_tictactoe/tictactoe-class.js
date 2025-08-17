@@ -228,15 +228,11 @@ class TTTGame {
   }
 
   computerMoves() {
-    let choice = this.offensiveComputerMove() || this.defensiveComputerMove();
-
-    if (!choice) {
-      let validChoices = this.board.unusedSquares();
-
-      do {
-        choice = Math.floor(9 * Math.random() + 1).toString();
-      } while (!validChoices.includes(choice));
-    }
+    let choice =
+      this.offensiveComputerMove() ||
+      this.defensiveComputerMove() ||
+      this.pickCenterSquare() ||
+      this.pickRandomSquare();
 
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
@@ -273,6 +269,21 @@ class TTTGame {
       if (idx >= 0) return row[idx];
     }
     return null;
+  }
+
+  pickCenterSquare() {
+    return this.board.isUnusedSquare("5") ? "5" : null;
+  }
+
+  pickRandomSquare() {
+    let validChoices = this.board.unusedSquares();
+    let choice;
+
+    do {
+      choice = Math.floor(9 * Math.random() + 1).toString();
+    } while (!validChoices.includes(choice));
+
+    return choice;
   }
 
   gameOver() {
