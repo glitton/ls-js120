@@ -228,7 +228,7 @@ class TTTGame {
   }
 
   computerMoves() {
-    let choice = this.defensiveComputerMove();
+    let choice = this.offensiveComputerMove() || this.defensiveComputerMove();
 
     if (!choice) {
       let validChoices = this.board.unusedSquares();
@@ -239,6 +239,23 @@ class TTTGame {
     }
 
     this.board.markSquareAt(choice, this.computer.getMarker());
+  }
+
+  offensiveComputerMove() {
+    for (let idx = 0; idx < TTTGame.POSSIBLE_WINNING_ROWS.length; idx++) {
+      let row = TTTGame.POSSIBLE_WINNING_ROWS[idx];
+      let key = this.winningSquare(row);
+      if (key) return key;
+    }
+    return null;
+  }
+
+  winningSquare(row) {
+    if (this.board.countMarkersFor(this.human, row) === 2) {
+      let idx = row.findIndex((key) => this.board.isUnusedSquare(key));
+      if (idx >= 0) return row[idx];
+    }
+    return null;
   }
 
   defensiveComputerMove() {
