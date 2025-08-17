@@ -237,34 +237,25 @@ class TTTGame {
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
 
-  offensiveComputerMove() {
-    for (let idx = 0; idx < TTTGame.POSSIBLE_WINNING_ROWS.length; idx++) {
-      let row = TTTGame.POSSIBLE_WINNING_ROWS[idx];
-      let key = this.winningSquare(row);
-      if (key) return key;
-    }
-    return null;
-  }
-
-  winningSquare(row) {
-    if (this.board.countMarkersFor(this.human, row) === 2) {
-      let idx = row.findIndex((key) => this.board.isUnusedSquare(key));
-      if (idx >= 0) return row[idx];
-    }
-    return null;
-  }
-
   defensiveComputerMove() {
+    return this.findCriticalSquare(this.human);
+  }
+
+  offensiveComputerMove() {
+    return this.findCriticalSquare(this.computer);
+  }
+
+  findCriticalSquare(player) {
     for (let idx = 0; idx < TTTGame.POSSIBLE_WINNING_ROWS.length; idx++) {
       let row = TTTGame.POSSIBLE_WINNING_ROWS[idx];
-      let key = this.atRiskSquare(row);
+      let key = this.criticalSquare(row, player);
       if (key) return key;
     }
     return null;
   }
 
-  atRiskSquare(row) {
-    if (this.board.countMarkersFor(this.human, row) === 2) {
+  criticalSquare(row, player) {
+    if (this.board.countMarkersFor(player, row) === 2) {
       let idx = row.findIndex((key) => this.board.isUnusedSquare(key));
       if (idx >= 0) return row[idx];
     }
