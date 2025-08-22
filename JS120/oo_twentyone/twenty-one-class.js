@@ -1,8 +1,7 @@
 class Card {
-  constructor() {
-    //STUB
-    //state of card?
-    //rank, suit, points
+  constructor(suit, rank) {
+    this.suit = suit
+    this.rank = rank
   }
 }
 
@@ -127,7 +126,7 @@ class TwentyOneGame {
   }
 
   displayWelcomeMessage() {
-    //STUB
+    console.log("Welcome to Twenty One!")
   }
 
   displayGoodbyeMessage() {
