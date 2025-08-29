@@ -19,14 +19,13 @@ Iterate through obj1 keys
 return true
 */
 
-
 function objectsEqual(obj1, obj2) {
   let obj1Keys = Object.keys(obj1);
   let obj2Keys = Object.keys(obj2);
   if (obj1Keys.length !== obj2Keys.length) return false;
 
   for (let key of obj1Keys) {
-    if (obj1[key] !== obj2[key] || obj2[key] === undefined) {
+    if (obj1[key] !== obj2[key] || !obj2.hasOwnProperty(key)) {
       return false;
     }
   }
