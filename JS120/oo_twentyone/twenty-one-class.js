@@ -15,12 +15,16 @@ class Card {
     "Jack",
     "Queen",
     "King",
-    "Acd",
+    "Ace",
   ];
   constructor(suit, rank) {
     this.suit = suit;
     this.rank = rank;
     this.hidden = false;
+  }
+
+  toString() {
+    return `${this.rank} of ${this.suit}`;
   }
 }
 
@@ -47,18 +51,17 @@ class Deck {
 
 class Participant {
   constructor() {
-    //STUB
-    // state?
-    //score, hand, amount of money available
-    // what else
+    this.hand = [];
+  }
+
+  displayHand() {
+    this.hand.forEach((card) => console.log(`${card.toString()}`));
   }
 }
 
 class Player extends Participant {
   constructor() {
-    //STUB
-    //state of player
-    //score, hand, money
+    super();
   }
 
   hit() {
@@ -79,11 +82,8 @@ class Player extends Participant {
 }
 
 class Dealer extends Participant {
-  // Very similar to a Player; do we need this?
   constructor() {
-    //STUB
-    // What sort of state does a dealer need?
-    // Score? Hand? Deck of cards? Bow tie?
+    super();
   }
 
   hit() {
@@ -112,19 +112,17 @@ class Dealer extends Participant {
 
   deal() {
     //STUB
-    // does the dealer or the deck deal?
   }
 }
 
 class TwentyOneGame {
   constructor() {
-    //STUB
-    // What sort of state does the game need?
-    // A deck? Two participants?
+    this.deck = new Deck();
+    this.player = new Player();
+    this.dealer = new Dealer();
   }
 
   start() {
-    //SPIKE
     this.displayWelcomeMessage();
     this.dealCards();
     this.showCards();
@@ -135,11 +133,21 @@ class TwentyOneGame {
   }
 
   dealCards() {
-    //STUB
+    for (let count = 0; count < 2; count++) {
+      this.player.hand.push(this.deck.deal());
+      this.dealer.hand.push(this.deck.deal());
+    }
   }
 
   showCards() {
-    //STUB
+    console.log("");
+    console.log("Player has:");
+    this.player.displayHand();
+
+    console.log("\nDealer has:");
+    console.log(`  ${this.dealer.hand[0].toString()}`);
+    console.log("  and one hidden card.");
+    console.log("");
   }
 
   playerTurn() {
