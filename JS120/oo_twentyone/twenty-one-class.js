@@ -135,11 +135,22 @@ class TwentyOneGame {
 
   start() {
     this.displayWelcomeMessage();
-    this.dealCards();
-    this.showCards();
-    this.playerTurn();
-    this.dealerTurn();
-    this.displayResult();
+    while (true) {
+      this.deck = new Deck();
+      this.player.hand = [];
+      this.dealer.hand = [];
+      this.dealCards();
+      this.showCards();
+      this.playerTurn();
+
+      if (this.isBusted(this.player)) {
+        this.dealerTurn();
+      }
+      this.displayResult();
+      if (!this.playAgain()) break;
+      console.clear();
+    }
+
     this.displayGoodbyeMessage();
   }
 
@@ -269,11 +280,39 @@ class TwentyOneGame {
   }
 
   displayGoodbyeMessage() {
-    //STUB
+    console.log("Thanks for playing Twenty One, goodbye!");
   }
 
   displayResult() {
-    //STUB
+    if (this.isBusted(this.player)) {
+      console.log("You busted! Dealer wins!");
+    } else if (this.isBusted(this.dealer)) {
+      console.log("Dealer busts! You win!");
+    } else {
+      let playerScore = this.score(this.player);
+      let dealerScore = this.score(this.dealer);
+
+      if (playerScore > dealerScore) {
+        console.log("Congrats, you win!");
+      } else if (dealerScore > playerScore) {
+        console.log("Dealer wins!");
+      } else {
+        console.log("It's a tie!");
+      }
+    }
+    console.log("");
+  }
+
+  playAgain() {
+    console.log("");
+    let answer;
+    while (true) {
+      console.log("Would you like to play again?");
+      answer = readline.question().toLowerCase();
+      if (["y", "n"].includes(answer)) break;
+      console.log("Sorry that's not a valid choice");
+    }
+    return answer === "y";
   }
 }
 
