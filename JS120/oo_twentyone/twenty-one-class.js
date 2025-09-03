@@ -25,6 +25,9 @@ class Card {
   }
 
   toString() {
+    if (this.hidden) {
+      return "a Hidden Card";
+    }
     return `${this.rank} of ${this.suit}`;
   }
 }
@@ -57,10 +60,6 @@ class Participant {
 
   displayHand() {
     this.hand.forEach((card) => console.log(`${card.toString()}`));
-  }
-
-  isBusted(game) {
-    return game.score(this) > TwentyOneGame.GOAL_SUM;
   }
 }
 
@@ -112,7 +111,9 @@ class Dealer extends Participant {
   }
 
   reveal() {
-    //STUB
+    this.hand.forEach((card) => {
+      card.hidden = false;
+    });
   }
 
   deal() {
@@ -124,6 +125,7 @@ class TwentyOneGame {
   static GOAL_SUM = 21;
   static ACE_VALUE = 11;
   static FACE_VALUE = 10;
+  static DEALER_MIN_SUM = 17;
 
   constructor() {
     this.deck = new Deck();
@@ -146,6 +148,8 @@ class TwentyOneGame {
       this.player.hand.push(this.deck.deal());
       this.dealer.hand.push(this.deck.deal());
     }
+
+    this.dealer.hand[1].hidden = true;
   }
 
   showCards() {
@@ -176,12 +180,12 @@ class TwentyOneGame {
         this.showCards();
       }
 
-      if (choice === "s" || this.player.isBusted(this)) {
+      if (choice === "s" || this.player.isBusted(this.player)) {
         break;
       }
     }
 
-    if (this.player.isBusted(this)) {
+    if (this.isBusted(this.player)) {
       console.log(`Your score is ${this.score(this.player)} You busted!`);
     } else {
       console.log(
@@ -190,8 +194,29 @@ class TwentyOneGame {
     }
   }
 
+  dealerContinue() {
+    readline.question("Press Return to continue ...");
+  }
+
   dealerTurn() {
-    //STUB
+    console.log("\nDealer's turn ...");
+    this.dealer.reveal();
+
+    console.log("Dealer's cards are:");
+    this.dealer.displayHand();
+
+    while (this.score(this.dealer) <= this.DEALER_MIN_SUM) {
+      console.log("Dealer hits ...");
+      this.dealer.hand.push(this.deck.deal());
+      this.dealer.displayHand();
+      this.dealerContinue();
+    }
+
+    if (this.isBusted(this.dealer)) {
+      console.log(`Dealer busted with a score of ${this.score(this.dealer)}!`);
+    } else {
+      console.log(`Dealer stays with a score of ${this.score(this.dealer)}.`);
+    }
   }
 
   playerHitsOrStays() {
@@ -233,6 +258,10 @@ class TwentyOneGame {
       });
 
     return sum;
+  }
+
+  isBusted(participant) {
+    return game.score(participant) > TwentyOneGame.GOAL_SUM;
   }
 
   displayWelcomeMessage() {
