@@ -1,4 +1,5 @@
 const shuffle = require("shuffle-array");
+const readline = require("readline-sync");
 
 class Card {
   static SUITS = ["Hearts", "Diamonds", "Clubs", "Spades"];
@@ -56,6 +57,10 @@ class Participant {
 
   displayHand() {
     this.hand.forEach((card) => console.log(`${card.toString()}`));
+  }
+
+  score(){
+    
   }
 }
 
@@ -156,6 +161,21 @@ class TwentyOneGame {
 
   dealerTurn() {
     //STUB
+  }
+
+  playerHitsOrStays() {
+    let choice;
+
+    while (true) {
+      choice = readline
+        .question("Would you like to (h)it or (s)tay?")
+        .toLowerCase();
+      if (["h", "s"].includes(choice)) break;
+      console.log(
+        "Sorry, that's not a valid option.  Choose 'h' to hit or 's' to stay"
+      );
+      return choice;
+    }
   }
 
   displayWelcomeMessage() {
