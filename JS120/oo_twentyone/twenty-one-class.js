@@ -59,8 +59,8 @@ class Participant {
     this.hand.forEach((card) => console.log(`${card.toString()}`));
   }
 
-  score(){
-    
+  isBusted(game) {
+    return game.score(this) > TwentyOneGame.GOAL_SUM;
   }
 }
 
@@ -121,6 +121,10 @@ class Dealer extends Participant {
 }
 
 class TwentyOneGame {
+  static GOAL_SUM = 21;
+  static ACE_VALUE = 11;
+  static FACE_VALUE = 10;
+
   constructor() {
     this.deck = new Deck();
     this.player = new Player();
@@ -156,7 +160,34 @@ class TwentyOneGame {
   }
 
   playerTurn() {
-    //STUB
+    while (true) {
+      let choice;
+      while (true) {
+        choice = readline
+          .question("Would you like to (h)it or (s)tay? ")
+          .toLowerCase();
+        if (["h", "s"].includes(choice)) break;
+        console.log("Sorry, that's not a valid choice.");
+      }
+
+      if (choice === "h") {
+        this.player.hand.push(this.deck.deal());
+        console.log("You chose to hit!");
+        this.showCards();
+      }
+
+      if (choice === "s" || this.player.isBusted(this)) {
+        break;
+      }
+    }
+
+    if (this.player.isBusted(this)) {
+      console.log(`Your score is ${this.score(this.player)} You busted!`);
+    } else {
+      console.log(
+        `You chose to stay, your score is ${this.score(this.player)}`
+      );
+    }
   }
 
   dealerTurn() {
@@ -176,6 +207,32 @@ class TwentyOneGame {
       );
       return choice;
     }
+  }
+
+  score(participant) {
+    let hand = participant.hand;
+    let ranks = hand.map((card) => card.rank);
+
+    let sum = 0;
+    ranks.forEach((rank) => {
+      if (rank === "Ace") {
+        sum += TwentyOneGame.ACE_VALUE;
+      } else if (["Jack", "Queen", "King"].includes(rank)) {
+        sum += TwentyOneGame.FACE_VALUE;
+      } else {
+        sum += Number(rank);
+      }
+    });
+    // Correct for Aces
+    ranks
+      .filter((rank) => rank === "Ace")
+      .forEach((_) => {
+        if (sum > TwentyOneGame.GOAL_SUM) {
+          sum -= 10;
+        }
+      });
+
+    return sum;
   }
 
   displayWelcomeMessage() {
