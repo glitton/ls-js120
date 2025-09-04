@@ -24,7 +24,8 @@ function createStudent(name, year) {
     },
 
     addCourse(course) {
-      return this.courses.push(course);
+      this.courses.push(course);
+      return this.courses
     },
 
     addNote(code, note) {
