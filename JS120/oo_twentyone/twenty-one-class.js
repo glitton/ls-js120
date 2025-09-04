@@ -86,6 +86,7 @@ class TwentyOneGame {
   static ACE_VALUE = 11;
   static FACE_VALUE = 10;
   static DEALER_MIN_SUM = 17;
+  static TEN_POINTS = 10;
 
   constructor() {
     this.deck = new Deck();
@@ -136,19 +137,10 @@ class TwentyOneGame {
 
   playerTurn() {
     while (true) {
-      let choice;
-      while (true) {
-        choice = readline
-          .question("Would you like to (h)it or (s)tay? ")
-          .toLowerCase();
-        if (["h", "s"].includes(choice)) break;
-        console.log("Sorry, that's not a valid choice.");
-      }
+      let choice = this.getPlayerChoice();
 
       if (choice === "h") {
-        this.player.hand.push(this.deck.deal());
-        console.log("You chose to hit!");
-        this.showCards();
+        this.playerHits();
       }
 
       if (choice === "s" || this.isBusted(this.player)) {
@@ -156,6 +148,31 @@ class TwentyOneGame {
       }
     }
 
+    this.displayPlayerTurnResult();
+  }
+
+  //HELPER
+  getPlayerChoice() {
+    let choice;
+    while (true) {
+      choice = readline
+        .question("Would you like to (h)it or (s)tay? ")
+        .toLowerCase();
+      if (["h", "s"].includes(choice)) break;
+      console.log("Sorry, that's not a valid choice.");
+    }
+    return choice;
+  }
+
+  //HELPER
+  playerHits() {
+    this.player.hand.push(this.deck.deal());
+    console.log("You chose to hit!");
+    this.showCards();
+  }
+
+  //HELPER
+  displayPlayerTurnResult() {
     if (this.isBusted(this.player)) {
       console.log(`Your score is ${this.score(this.player)}. You busted!`);
     } else {
@@ -201,13 +218,12 @@ class TwentyOneGame {
       console.log(
         "Sorry, that's not a valid option.  Choose 'h' to hit or 's' to stay"
       );
-      return choice;
     }
+    return choice;
   }
 
   score(participant) {
-    let hand = participant.hand;
-    let ranks = hand.map((card) => card.rank);
+    let ranks = participant.hand.map((card) => card.rank);
 
     let sum = 0;
     ranks.forEach((rank) => {
@@ -223,11 +239,8 @@ class TwentyOneGame {
     ranks
       .filter((rank) => rank === "Ace")
       .forEach((_) => {
-        if (sum > TwentyOneGame.GOAL_SUM) {
-          sum -= 10;
-        }
+        if (sum > TwentyOneGame.GOAL_SUM) sum -= TwentyOneGame.TEN_POINTS;
       });
-
     return sum;
   }
 
