@@ -67,22 +67,6 @@ class Player extends Participant {
   constructor() {
     super();
   }
-
-  hit() {
-    //STUB
-  }
-
-  stay() {
-    //STUB
-  }
-
-  isBusted() {
-    //STUB
-  }
-
-  score() {
-    //STUB
-  }
 }
 
 class Dealer extends Participant {
@@ -90,34 +74,10 @@ class Dealer extends Participant {
     super();
   }
 
-  hit() {
-    //STUB
-  }
-
-  stay() {
-    //STUB
-  }
-
-  isBusted() {
-    //STUB
-  }
-
-  score() {
-    //STUB
-  }
-
-  hide() {
-    //STUB
-  }
-
   reveal() {
     this.hand.forEach((card) => {
       card.hidden = false;
     });
-  }
-
-  deal() {
-    //STUB
   }
 }
 
@@ -143,7 +103,7 @@ class TwentyOneGame {
       this.showCards();
       this.playerTurn();
 
-      if (this.isBusted(this.player)) {
+      if (!this.isBusted(this.player)) {
         this.dealerTurn();
       }
       this.displayResult();
@@ -191,13 +151,13 @@ class TwentyOneGame {
         this.showCards();
       }
 
-      if (choice === "s" || this.player.isBusted(this.player)) {
+      if (choice === "s" || this.isBusted(this.player)) {
         break;
       }
     }
 
     if (this.isBusted(this.player)) {
-      console.log(`Your score is ${this.score(this.player)} You busted!`);
+      console.log(`Your score is ${this.score(this.player)}. You busted!`);
     } else {
       console.log(
         `You chose to stay, your score is ${this.score(this.player)}`
@@ -216,7 +176,7 @@ class TwentyOneGame {
     console.log("Dealer's cards are:");
     this.dealer.displayHand();
 
-    while (this.score(this.dealer) <= this.DEALER_MIN_SUM) {
+    while (this.score(this.dealer) < TwentyOneGame.DEALER_MIN_SUM) {
       console.log("Dealer hits ...");
       this.dealer.hand.push(this.deck.deal());
       this.dealer.displayHand();
@@ -272,7 +232,7 @@ class TwentyOneGame {
   }
 
   isBusted(participant) {
-    return game.score(participant) > TwentyOneGame.GOAL_SUM;
+    return this.score(participant) > TwentyOneGame.GOAL_SUM;
   }
 
   displayWelcomeMessage() {
@@ -280,6 +240,7 @@ class TwentyOneGame {
   }
 
   displayGoodbyeMessage() {
+    console.clear();
     console.log("Thanks for playing Twenty One, goodbye!");
   }
 
