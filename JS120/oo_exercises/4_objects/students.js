@@ -116,30 +116,17 @@ const school = {
     }
   },
 
-  getReportCard(name) {
-    let studentName = this.students.find((student) => student.name === name);
-    studentName.courses.forEach((courseObj) => {
-      if (courseObj.grade !== undefined) {
-        console.log(`${courseObj.name}: ${courseObj.grade}`);
+  getReportCard(studentObj) {
+    studentObj.courses.forEach((course) => {
+      if (course.grade !== undefined) {
+        console.log(`${course.name}: ${course.grade}`);
       } else {
-        console.log(`${courseObj.name}: In progress`);
+        console.log(`${course.name}: In progress`);
       }
     });
   },
 
-  courseReport(courseName){
-    /*
-    Log the grades of all students for a given course name.  Only students with grades are part of the course report
-    input: student array of objects
-    output: student name: grade, course average
-    rules: only log student names that have grades in the given subject
-    A:
-    Iterate over the student array of objects
-    - for each object 
-      find the courseName that matches the input parameter
-    */
-
-  }
+  courseReport(courseName) {},
 };
 
 let paul = school.addStudent("Paul", "3rd");
@@ -155,7 +142,4 @@ school.enrollStudent("Mary", { name: "Math", code: 101, grade: 91 });
 school.enrollStudent("Kim", { name: "Math", code: 101, grade: 93 });
 school.enrollStudent("Kim", { name: "Advanced Math", code: 102, grade: 90 });
 
-school.getReportCard("Paul");
-// school.getReportCard("Kim");
-// school.getReportCard("Mary");
-// console.log(JSON.stringify(paul.courses, null, 2));
+school.getReportCard(paul);
