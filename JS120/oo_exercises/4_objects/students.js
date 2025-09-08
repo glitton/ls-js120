@@ -126,7 +126,33 @@ const school = {
     });
   },
 
-  courseReport(courseName) {},
+  courseReport(courseName) {
+    function getCourse(student, courseName) {
+      //return student.listCourses().filter(course => course.name === courseName)[0]
+      return student.listCourses().filter(({ name }) => name === courseName)[0];
+    }
+
+    const courseStudents = this.students
+      .map((student) => {
+        const course = getCourse(student, courseName) || { grade: undefined };
+        return { name: student.name, grade: course.grade };
+      })
+      // .filter((studentData) => studentData.grade);
+      .filter(({ grade }) => grade);
+
+    if (courseStudents.length > 0) {
+      console.log(`=${courseName} Grades=`);
+
+      const average =
+        courseStudents.reduce((total, { name, grade }) => {
+          console.log(`${name}: ${String(grade)}`);
+          return total + grade;
+        }, 0) / courseStudents.length;
+
+      console.log("---");
+      console.log(`Course Average: ${String(average)}`);
+    }
+  },
 };
 
 let paul = school.addStudent("Paul", "3rd");
@@ -142,4 +168,7 @@ school.enrollStudent("Mary", { name: "Math", code: 101, grade: 91 });
 school.enrollStudent("Kim", { name: "Math", code: 101, grade: 93 });
 school.enrollStudent("Kim", { name: "Advanced Math", code: 102, grade: 90 });
 
-school.getReportCard(paul);
+// school.getReportCard(paul);
+school.courseReport("Math");
+school.courseReport("Advanced Math");
+school.courseReport("Physics");
